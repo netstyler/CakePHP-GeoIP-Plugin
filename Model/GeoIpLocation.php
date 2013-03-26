@@ -74,6 +74,7 @@ class GeoIpLocation extends AppModel
                 ));
             }
         } catch (Exception $e) {
+			echo $e->getMessage();
             return null;
         }
         return $this->data;
