@@ -32,12 +32,13 @@ App::import('GeoIp.Lib', 'GeoIP');
 class GeoIpLocation extends AppModel {
 
 /**
- * Container for data returned by the find method
+ * Behaviors
  *
  * @var array
- * @access public
  */
-	public $data = array();
+	public $actsAs = array(
+		'GeoIp.GeoIp'
+	);
 
 /**
  * The name of the model
@@ -47,39 +48,8 @@ class GeoIpLocation extends AppModel {
  */
 	public $name = 'GeoIpLocation';
 
-/**
- * Find
- *
- * @param string $ipAddress The IP Address for which to find the location.
- * @return mixed Array of location data or null if no location found.
- * @access public
- */
-	public function ipLookup($ipAddress) {
-		$GeoIp = Net_GeoIP::getInstance(dirname(dirname(__FILE__)) . DS . 'data' . DS . 'GeoIP.dat');
-		try {
-			$location = $GeoIp->lookupLocation($ipAddress);
-			if (!empty($location)) {
-				$this->data = array($this->name => array(
-					'country_code' => $location->countryCode,
-					'country_code_3' => $location->countryCode3,
-					'country_name' => $location->countryName,
-					'region' => $location->region,
-					'city' => $location->city,
-					'postal_code' => $location->postalCode,
-					'latitude' => $location->latitude,
-					'longitude' => $location->longitude,
-					'area_code' => $location->areaCode,
-					'dma_code' => $location->dmaCode
-				));
-			}
-		} catch (Exception $e) {
-			echo $e->getMessage();
-			return null;
-		}
-		return $this->data;
-	}
-
 	public function find($type = 'first', $query = array()) {
 		$this->ipLookup($type);
 	}
+
 }
