@@ -24,7 +24,7 @@ class GeoIpBehavior extends ModelBehavior {
 		try {
 			$location = $GeoIp->lookupLocation($ipAddress);
 			if (!empty($location)) {
-				$this->data = array($this->name => array(
+				$this->data = array($Model->name => array(
 					'country_code' => $location->countryCode,
 					'country_code_3' => $location->countryCode3,
 					'country_name' => $location->countryName,
