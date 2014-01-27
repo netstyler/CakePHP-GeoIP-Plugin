@@ -1,5 +1,6 @@
 <?php
 App::uses('GeoIp', 'ModelBehavior');
+App::import('GeoIp.Vendor', 'GeoIP/GeoIP');
 
 class GeoIpBehavior extends ModelBehavior {
 
