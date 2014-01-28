@@ -1,6 +1,6 @@
 <?php
 App::uses('GeoIp', 'ModelBehavior');
-App::import('GeoIp.Vendor', 'GeoIP/GeoIP');
+include(CakePlugin::path('GeoIp') . 'Vendor' . DS . 'GeoIP' . DS . 'GeoIP.php');
 
 class GeoIpBehavior extends ModelBehavior {
 
