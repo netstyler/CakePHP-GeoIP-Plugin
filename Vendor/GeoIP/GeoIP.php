@@ -583,9 +583,13 @@ class Net_GeoIP
      */
     protected function lookupCountryId($addr)
     {
-        $ipnum = ip2long($addr);
+        $ipnum = ip2long($addr); debug($addr);
         if ($ipnum === false) {
-            throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
+			$ipnum = $this->bin2ip($addr);
+			$ipnum = ip2long($ipnum);
+			if ($ipnum === false) {
+				throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
+			}
         }
         if ($this->databaseType !== self::COUNTRY_EDITION) {
             throw new Exception("Invalid database type; lookupCountry*() methods expect Country database.");
@@ -593,7 +597,44 @@ class Net_GeoIP
         return $this->seekCountry($ipnum) - self::COUNTRY_BEGIN;
     }
 
-    /**
+	protected function bin2ip($bin) {
+		$bin = $this->ip2bin($bin);
+		if(strlen($bin) <= 32) // 32bits (ipv4)
+			return long2ip(base_convert($bin,2,10));
+		if(strlen($bin) != 128)
+			return false;
+		$pad = 128 - strlen($bin);
+		for ($i = 1; $i <= $pad; $i++)
+		{
+			$bin = "0".$bin;
+		}
+		$bits = 0;
+		$ipv6 = '';
+		while ($bits <= 7)
+		{
+			$bin_part = substr($bin,($bits*16),16);
+			$ipv6 .= dechex(bindec($bin_part)).":";
+			$bits++;
+		}
+		return inet_ntop(inet_pton(substr($ipv6,0,-1)));
+	}
+
+	protected function ip2bin($ip) {
+		if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false)
+			return base_convert(ip2long($ip),10,2);
+		if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
+			return false;
+		if(($ip_n = inet_pton($ip)) === false) return false;
+		$bits = 15; // 16 x 8 bit = 128bit (ipv6)
+		while ($bits >= 0)
+		{
+			$bin = sprintf("%08b",(ord($ip_n[$bits])));
+			$ipbin = $bin;
+			$bits--;
+		}
+		return $ipbin;
+	}
+	/**
      * Returns 2-letter country code (e.g. 'CA') for specified IP address.
      * Use this method if you have a Country database.
      *
@@ -682,9 +723,13 @@ class Net_GeoIP
     public function lookupOrg($addr)
     {
         $ipnum = ip2long($addr);
-        if ($ipnum === false) {
-            throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
-        }
+		if ($ipnum === false) {
+			$ipnum = $this->bin2ip($addr);
+			$ipnum = ip2long($ipnum);
+			if ($ipnum === false) {
+				throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
+			}
+		}
         if ($this->databaseType !== self::ORG_EDITION) {
             throw new Exception("Invalid database type; lookupOrg() method expects Org/ISP database.", self::ERR_DB_FORMAT);
         }
@@ -704,9 +749,13 @@ class Net_GeoIP
     public function lookupRegion($addr)
     {
         $ipnum = ip2long($addr);
-        if ($ipnum === false) {
-            throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
-        }
+		if ($ipnum === false) {
+			$ipnum = $this->bin2ip($addr);
+			$ipnum = ip2long($ipnum);
+			if ($ipnum === false) {
+				throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
+			}
+		}
         if ($this->databaseType !== self::REGION_EDITION_REV0 && $this->databaseType !== self::REGION_EDITION_REV1) {
             throw new Exception("Invalid database type; lookupRegion() method expects Region database.", self::ERR_DB_FORMAT);
         }
@@ -727,9 +776,13 @@ class Net_GeoIP
     {
         include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Location.php';
         $ipnum = ip2long($addr);
-        if ($ipnum === false) {
-            throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
-        }
+		if ($ipnum === false) {
+			$ipnum = $this->bin2ip($addr);
+			$ipnum = ip2long($ipnum);
+			if ($ipnum === false) {
+				throw new Exception("Invalid IP address: " . var_export($addr, true), self::ERR_INVALID_IP);
+			}
+		}
         if ($this->databaseType !== self::CITY_EDITION_REV0 && $this->databaseType !== self::CITY_EDITION_REV1) {
             throw new Exception("Invalid database type; lookupLocation() method expects City database.");
         }
