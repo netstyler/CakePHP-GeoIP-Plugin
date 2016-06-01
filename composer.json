@@ -1,11 +1,19 @@
 {
     "name": "netstyler/cakephp-geoip",
-    "description": "GeoIP Plugin",
+    "description": "GeoIP Plugin for CakePHP",
     "type": "cakephp-plugin",
-    "keywords": ["cakephp", "GeoIp"],
+    "keywords": [
+        "cakephp",
+        "GeoIp"
+    ],
     "homepage": "https://github.com/netstyler/CakePHP-GeoIP-Plugin",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Florian Krämer",
+            "homepage": "http://florian-kraemer.net",
+            "role": "Author"
+        },
         {
             "name": "Falk Romano",
             "homepage": "http://www.netstyler.ch",
@@ -15,10 +23,28 @@
     "support": {
         "source": "https://github.com/netstyler/CakePHP-GeoIP-Plugin"
     },
-    "require": {
-        "php": ">=5.3.0"
+    "scripts": {
+        "post-install-cmd": [
+            "php config/composer_post_install_script.php"
+        ]
     },
-    "extra": {
-        "installer-name": "cakephp-geoip"
-    }
+    "autoload": {
+        "psr-4": {
+            "Netstyler\\GeoIp\\": "src",
+            "Netstyler\\GeoIp\\Test\\Fixture\\": "tests\\Fixture"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cake\\Test\\": "vendor/cakephp/cakephp/tests",
+            "Netstyler\\GeoIp\\Test\\": "tests"
+        }
+    },
+    "require": {
+        "cakephp/cakephp": "3.*",
+        "pear/net_geoip": "*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "prefer-source": true
 }
