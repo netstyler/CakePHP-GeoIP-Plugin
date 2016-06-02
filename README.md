@@ -2,32 +2,32 @@
 
 A CakePHP Plugin for finding a location based on an IP Address using the MaxMind GeoIP database and the PEAR Net_GeoIP package.
 
-## References
-
-* http://www.maxmind.com/app/ip-location
-* http://pear.php.net/package/Net_GeoIP/
-* http://pear.php.net/manual/en/package.networking.net-geoip.lookuplocation.php
-
 ## Installation
 
-1. Copy the plugin to app/Plugin/GeoIp
-2. Download the MaxMind GeoLite City Database at http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
-3. Uncompress the database to app/Plugin/GeoIp/data/GeoIP.dat
+Install the plugin via composer. It should download the required GeoIp DB files during the installation process.
+
+```
+composer require netstyler/geoip 2.*
+```
+
+Load the plugin including it's bootstrap in your applications bootstrap.php:
+
+```php
+Plugin::load('Netstyler/GeoIp', [
+    'bootstrap' => true
+]);
+```
 
 ## Usage
 
-Just load the behavior
-
 ```php
-class MyModel extends AppModel {
-	public $actsAs = array('GeoIp.GeoIp);
-}
-```
+use Netstyler\GeoIp\GeoIp;
 
-You can then call:
-
-```php
-$location = $this->MyModel->ipLookup(CakeRequest::clientIp(false));
+$geoIp = $new GeoIp();
+// Use a Cake\Network\Request object where available
+$geoIp->lookup($this->request);
+// Or just pass an ip from somewhere else
+$geoIp->lookup($ipAddress);
 ```
 
 ## Contributing to this Plugin

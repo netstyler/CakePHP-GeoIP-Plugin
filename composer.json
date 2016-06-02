@@ -42,9 +42,7 @@
     },
     "require": {
         "cakephp/cakephp": "3.*",
-        "pear/net_geoip": "*",
-        "geoip2/geoip2": "~2.0",
-        "geoip/geoip": "~1.16"
+        "geoip2/geoip2": "~2.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

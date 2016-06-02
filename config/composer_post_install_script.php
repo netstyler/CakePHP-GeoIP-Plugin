@@ -6,8 +6,8 @@
 class GeoIpDatabaseDownloader {
 
     public $files = [
-        'GeoLiteCity.dat.gz' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz',
-        'GeoLiteCityv6.dat.gz' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz'
+        'GeoLite2-City.mmdb.gz' => 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz',
+        'GeoLite2-Country.mmdb.gz' => 'http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz',
     ];
 
     public function __construct($targetFolder) {
@@ -22,11 +22,20 @@ class GeoIpDatabaseDownloader {
 
     public function _download($url, $fileName) {
         $fileName = $this->targetFolder . $fileName;
-        file_put_contents($fileName, file_get_contents($url));
+        if (file_exists($fileName)) {
+            return;
+        }
 
+        file_put_contents($fileName, file_get_contents($url));
+        $outFileName = str_replace('.gz', '', $fileName);
+        $this->gunzip($fileName, $outFileName);
+
+        unlink($fileName);
+    }
+
+    public function gunzip($fileName, $outFileName) {
         // Raising this value may increase performance
         $bufferSize = 4096; // read 4kb at a time
-        $outFileName = str_replace('.gz', '', $fileName);
 
         // Open our files (in binary mode)
         $file = gzopen($fileName, 'rb');
@@ -42,7 +51,6 @@ class GeoIpDatabaseDownloader {
         // Files are done, close files
         fclose($outFile);
         gzclose($file);
-        unlink($fileName);
     }
 }
 

@@ -8,9 +8,4 @@ class GeoIpShell extends Shell {
     public function lookup() {
 
     }
-
-    public function downloadDb() {
-
-    }
-
 }
