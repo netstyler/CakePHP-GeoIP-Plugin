@@ -4,3 +4,5 @@
 /tmp
 *.mo
 /data/ GeoLiteCity.dat
+/data/GeoLiteCity.dat
+/data/GeoLiteCityv6.dat

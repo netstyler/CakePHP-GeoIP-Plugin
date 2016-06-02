@@ -13,8 +13,8 @@ trait GeoIpTrait {
         if (empty($dataFile)) {
             $dataFile = Configure::read('Netstyler/GeoIp.dataFile');
             if (empty($dataFile)) {
-                $dataFile = Plugin::path('Netstyler/GeoIp') . 'data' . DS . 'GeoIP.dat';
-                $dataFile = Plugin::path('Netstyler/GeoIp') . 'data' . DS . 'GeoIPv6.dat';
+                $dataFile = Plugin::path('Netstyler/GeoIp') . 'data' . DS . 'GeoLiteCity.dat';
+                //$dataFile = Plugin::path('Netstyler/GeoIp') . 'data' . DS . 'GeoLiteCityv6.dat';
             }
         }
 
