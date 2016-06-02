@@ -44,6 +44,10 @@
         "cakephp/cakephp": "3.*",
         "geoip2/geoip2": "~2.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "cakephp/cakephp-codesniffer": "dev-master"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "prefer-source": true

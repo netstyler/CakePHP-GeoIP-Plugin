@@ -5,7 +5,8 @@ use Cake\Core\Configure;
 use Cake\Network\Request;
 use GeoIp2\Database\Reader;
 
-class GeoIp {
+class GeoIp
+{
 
     /**
      * Configuration
@@ -22,7 +23,9 @@ class GeoIp {
     protected $_geoIp;
 
     /**
+     * Constructor
      *
+     * @param array $config Configuration.
      */
     public function __construct(array $config = [])
     {
@@ -48,6 +51,7 @@ class GeoIp {
      * Get the location based on the given ip address.
      *
      * @param string|\Cake\Network\Request|null $ipAddress An ipv4 or ipv6 address.
+     * @return \GeoIp2\Model\AbstractModel
      */
     public function lookup($ipAddress = null)
     {
@@ -65,21 +69,22 @@ class GeoIp {
     /**
      * Checks the configuration data.
      *
+     * @param array $config Configuration to check.
      * @return void
      */
-    protected function _validateConfig($options)
+    protected function _validateConfig($config)
     {
-        if (!isset($options['dataFile'])) {
+        if (!isset($config['dataFile'])) {
             throw new RuntimeException('GeoIp database file is not');
         }
 
-        if (empty($options['dataType'])) {
+        if (empty($config['dataType'])) {
             throw new RuntimeException('GeoIp data type is not specified. Must be city or country.');
         }
 
         $types = ['city', 'country', 'enterprise', 'domain'];
-        if (!in_array($options['dataType'], $types)) {
-            throw new RuntimeException(sprintf('Invalid data type `%s`! Must be city or country.', $options['dataType']));
+        if (!in_array($config['dataType'], $types)) {
+            throw new RuntimeException(sprintf('Invalid data type `%s`! Must be city or country.', $config['dataType']));
         }
     }
 }
