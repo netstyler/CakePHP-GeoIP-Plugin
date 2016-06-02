@@ -21,12 +21,11 @@ class GeoIpTraitTest extends TestCase {
         // ipv4
         $result = $trait->getLocationFromIp('8.8.8.8');
         $this->assertInstanceOf('GeoIp2\Model\City', $result);
-        //debug(get_class($result));
-        //debug($result->jsonSerialize());
+        $this->assertEquals('US', $result->country->isoCode);
 
         // ipv6
         $result = $trait->getLocationFromIp('2001:4860:4860::8888');
         $this->assertInstanceOf('GeoIp2\Model\City', $result);
-        //debug($result);
+        $this->assertEquals('US', $result->country->isoCode);
     }
 }

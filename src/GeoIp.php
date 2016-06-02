@@ -47,12 +47,13 @@ class GeoIp {
     /**
      * Get the location based on the given ip address.
      *
-     * @param string|\Cake\Network\Request $ipAddress An ipv4 or ipv6 address.
+     * @param string|\Cake\Network\Request|null $ipAddress An ipv4 or ipv6 address.
      */
-    public function lookup($ipAddress)
+    public function lookup($ipAddress = null)
     {
         if (empty($ipAddress)) {
-            $ipAddress = env('HTTP_REMOTE_ADDR');
+            $request = new Request();
+            $ipAddress = $request->clientIp();
         }
         if ($ipAddress instanceof Request) {
             $ipAddress = $ipAddress->clientIp();
@@ -76,7 +77,8 @@ class GeoIp {
             throw new RuntimeException('GeoIp data type is not specified. Must be city or country.');
         }
 
-        if (!in_array($options['dataType'], ['city', 'country'])) {
+        $types = ['city', 'country', 'enterprise', 'domain'];
+        if (!in_array($options['dataType'], $types)) {
             throw new RuntimeException(sprintf('Invalid data type `%s`! Must be city or country.', $options['dataType']));
         }
     }
