@@ -4,6 +4,7 @@ namespace Netstyler\GeoIp;
 use Cake\Core\Configure;
 use Cake\Network\Request;
 use GeoIp2\Database\Reader;
+use RuntimeException;
 
 class GeoIp
 {
